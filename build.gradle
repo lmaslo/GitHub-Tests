@@ -1,10 +1,27 @@
 plugins {
     id 'java'
+    id "io.qameta.allure" version "2.9.6"
 }
 
 
 repositories {
     mavenCentral()
+}
+
+def allureVersion = "2.17.3"
+
+allure {
+    adapter {
+        aspectjWeaver.set(true)
+        frameworks {
+            junit5 {
+                adapterVersion.set(allureVersion)
+            }
+        }
+    }
+    report {
+        version.set(allureVersion)
+    }
 }
 
 dependencies {
@@ -13,7 +30,8 @@ dependencies {
             'org.junit.jupiter:junit-jupiter-api:5.8.2',
             "org.junit.jupiter:junit-jupiter:5.8.2",
             'io.github.bonigarcia:webdrivermanager:5.1.1',
-            "org.aeonbits.owner:owner:1.0.4"
+            "org.aeonbits.owner:owner:1.0.4",
+            "io.qameta.allure:allure-selenide:$allureVersion"
     )
     testRuntimeOnly(
             'org.junit.jupiter:junit-jupiter-engine:5.8.2',
@@ -21,9 +39,17 @@ dependencies {
     )
 }
 
-test {
+tasks.withType(Test) {
     // System.getProperties() - вот здесь находится все, что вы передается через -D
     // project.property() - вот здесь находится все, что вы передает через -P
     useJUnitPlatform()
     systemProperties(System.getProperties())
+
+    testLogging {
+        lifecycle {
+//            events "started", "failed"
+            events "started", "skipped", "failed", "standard_error", "standard_out"
+            exceptionFormat "short"
+        }
+    }
 }
