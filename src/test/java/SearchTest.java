@@ -16,3 +16,4 @@ public class SearchTest extends TestBase {
         $(".repo-list").shouldHave(text("lmaslo"));
     }
 }
+

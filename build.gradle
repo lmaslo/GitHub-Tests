@@ -31,7 +31,9 @@ dependencies {
             "org.junit.jupiter:junit-jupiter:5.8.2",
             'io.github.bonigarcia:webdrivermanager:5.1.1',
             "org.aeonbits.owner:owner:1.0.4",
-            "io.qameta.allure:allure-selenide:$allureVersion"
+            "io.qameta.allure:allure-selenide:$allureVersion",
+            "io.rest-assured:rest-assured:5.1.0",
+            'org.assertj:assertj-core:3.22.0'
     )
     testRuntimeOnly(
             'org.junit.jupiter:junit-jupiter-engine:5.8.2',
@@ -56,5 +58,11 @@ tasks.withType(Test) {
 task web_test(type: Test) {
     useJUnitPlatform {
         includeTags "web"
+    }
+}
+
+task api_test(type: Test) {
+    useJUnitPlatform {
+        includeTags "api"
     }
 }
